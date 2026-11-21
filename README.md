@@ -1,6 +1,6 @@
 <div align="center">
 
-# Mini DRAM Controller
+# Mini_DRAM_Controller
 
 **행 · 열 명령 버스, 뱅크 그룹, per-bank refresh, RowHammer 대응(RFM)을 갖춘 SystemVerilog DRAM 메모리 컨트롤러**<br>
 Spec → RTL → Verification → Performance / PPA
@@ -9,9 +9,9 @@ Spec → RTL → Verification → Performance / PPA
 [![Sim](https://img.shields.io/badge/Sim-Verilator%205.052-2ea44f)](Makefile)
 [![Synth](https://img.shields.io/badge/Synth%20%2F%20STA-Yosys%200.52%20%C2%B7%20OpenSTA%203.1-8250df)](#ppa)
 
-**[📄 포트폴리오 PDF (27쪽)](portfolio-deck/MiniDramController_Portfolio.pdf)** · [PPTX](portfolio-deck/MiniDramController_Portfolio.pptx) · [스펙 문서](docs/spec.md) · [검증 문서](docs/verification.md)
+**[📄 포트폴리오 PDF (27쪽)](portfolio-deck/Mini_DRAM_Controller_Portfolio.pdf)** · [PPTX](portfolio-deck/Mini_DRAM_Controller_Portfolio.pptx) · [스펙 문서](docs/spec.md) · [검증 문서](docs/verification.md)
 
-<a href="portfolio-deck/MiniDramController_Portfolio.pdf"><img src="portfolio-deck/cover.png" width="760" alt="포트폴리오 표지. 클릭하면 PDF가 열립니다"></a>
+<a href="portfolio-deck/Mini_DRAM_Controller_Portfolio.pdf"><img src="portfolio-deck/cover.png" width="760" alt="포트폴리오 표지. 클릭하면 PDF가 열립니다"></a>
 
 </div>
 
@@ -42,7 +42,7 @@ DRAM 접근 지연은 뱅크 상태에 따라 크게 달라진다. 동일 bank 0
 - **범위**: `host_if` → `mem_ctrl`(`mc_queue` ×2, `mc_xage`, `mc_wdrain`, `mc_sched`, `mc_bank` ×4, `mc_chan`, `mc_refresh`, `mc_resp`) → `dram_model`(뱅크 그룹 2 × 뱅크 2). 단일 클럭 동기 설계, 비동기 리셋
 - **타이밍**: 자체 축소 모델(사이클 단위). JEDEC 값이 아닌 구조 · 규칙 검증용 값
 - **Out of Scope**: 실제 PHY, multi-rank, ECC, Sign-off PPA
-- **HBM에서의 위치**: 표준 HBM(HBM3E까지)에서 메모리 컨트롤러는 호스트 SoC(GPU · 가속기)에 위치한다. HBM4 세대부터 base die를 로직 공정으로 제작하면서 컨트롤러를 base die로 이동하는 custom HBM 구조가 등장했고, [High-Speed Link Lite](https://github.com/yhkwon-git/High_Speed_Link_Lite)는 이 컨트롤러를 해당 구조의 base die에 적용했다
+- **HBM에서의 위치**: 표준 HBM(HBM3E까지)에서 메모리 컨트롤러는 호스트 SoC(GPU · 가속기)에 위치한다. HBM4 세대부터 base die를 로직 공정으로 제작하면서 컨트롤러를 base die로 이동하는 custom HBM 구조가 등장했고, [High_Speed_Link_Lite](https://github.com/yhkwon-git/High_Speed_Link_Lite)는 이 컨트롤러를 해당 구조의 base die에 적용했다
 
 ## 주요 특징
 
@@ -439,7 +439,7 @@ ready 명령 중 열 버스와 행 버스에 각 1개를 선택한다. 최고령
 | reg2reg (ns) | 0.809 | 2.880 | 2.753 | 4.765 | 2.922 | **2.831** |
 | ≈ fmax (MHz) | 1,182 | 343 | 357 | 208 | 337 | **348** |
 
-<sub>≈ fmax는 1 / 최소 주기다. 최소 주기는 reg2reg 지연에 캡처 플롭의 setup을 더한 값이다(v4: 2.831 + 0.043 = 2.874 ns, `make ppa`가 쓰는 `ppa.csv`의 `min_period_ns`). 동일 RTL이 [High-Speed Link Lite](https://github.com/yhkwon-git/High_Speed_Link_Lite)의 칩 STA에서는 2.18 ns(459 MHz, HSL `e61e90d`)로 측정된다. 해당 Flow는 칩 전체를 계층 유지 상태로 `abc -D 1250 -constr`(목표 1.25 ns) 매핑하고 팬아웃 버퍼 트리를 삽입한다. 본 `make ppa`는 `mem_ctrl`만 flatten해 타이밍 목표 · 팬아웃 버퍼 없이 매핑한다. 차이 요인별 기여도는 분리 측정하지 않았다.</sub>
+<sub>≈ fmax는 1 / 최소 주기다. 최소 주기는 reg2reg 지연에 캡처 플롭의 setup을 더한 값이다(v4: 2.831 + 0.043 = 2.874 ns, `make ppa`가 쓰는 `ppa.csv`의 `min_period_ns`). 동일 RTL이 [High_Speed_Link_Lite](https://github.com/yhkwon-git/High_Speed_Link_Lite)의 칩 STA에서는 2.18 ns(459 MHz, HSL `e61e90d`)로 측정된다. 해당 Flow는 칩 전체를 계층 유지 상태로 `abc -D 1250 -constr`(목표 1.25 ns) 매핑하고 팬아웃 버퍼 트리를 삽입한다. 본 `make ppa`는 `mem_ctrl`만 flatten해 타이밍 목표 · 팬아웃 버퍼 없이 매핑한다. 차이 요인별 기여도는 분리 측정하지 않았다.</sub>
 
 v4는 기능 추가에도 v3보다 빠르다. 단일 명령 버스에서는 RD/WR와 ACT/PRE 중 하나를 선택하는 단계(`use_col`, FCFS면 age 비교 포함)가 critical path에 있었다. 버스 분리 구조에서는 해당 단계가 불필요하다. RFM 추가 전에는 2.612 ns(377 MHz, 미커밋 측정)였고, 뱅크별 RAA 카운터와 RFM 명령 선택이 행 버스 앞단에 추가되어 2.831 ns가 되었다.
 
@@ -474,8 +474,8 @@ v4는 기능 추가에도 v3보다 빠르다. 단일 명령 버스에서는 RD/W
 **Verilator 5.x**(`--binary`, `--timing`)와 `make`가 필요하다. Ubuntu 22.04의 apt 패키지는 Verilator 4.x이므로 Ubuntu 24.04 이상을 사용하거나 소스에서 빌드한다.
 
 ```bash
-git clone https://github.com/yhkwon-git/mini-dram-controller.git
-cd mini-dram-controller
+git clone https://github.com/yhkwon-git/Mini_DRAM_Controller.git
+cd Mini_DRAM_Controller
 make check-tools     # verilator, python3, cocotb 확인
 make sim             # directed 시나리오 6개 + bind 체커 → [TB] PASS
 make sim-rand        # 랜덤 1회 (PATTERN=mixed SEED=1 N=2000)
@@ -553,16 +553,16 @@ Makefile                       sim, sim-rand, regress, cov, ppa, lint, sim-cocot
 | [스케줄러 latency · throughput](docs/scheduler-throughput.md) | v0 – v4 경로별 latency, 처리량, 두 버스 · refresh 방식 · 정책 · 매핑 비교, trade-off |
 | [분석](docs/analysis.md) | 트래픽 7종 × 빌드 16개 × 두 부하, refresh · 버스 · 매핑 · 큐 깊이 · 정책별 성능과 면적 · 타이밍, 권장 설정 |
 | [커버리지](docs/coverage.md) | 시나리오별 확인 항목, 랜덤 회귀로 해소된 Hole, 잔여 Hole |
-| [포트폴리오 PDF](portfolio-deck/MiniDramController_Portfolio.pdf) | 27쪽. v0 → v4 요약(2쪽), v4 상세: 스펙 · 구조 · RTL · 파형 · 검증 · 디버그 · trade-off · HSL 통합 · 버전별 latency(3–21쪽), v2 – v4 비교: 구조 · 검증 · 성능 · 트래픽 분석 · PPA(22–26쪽) |
+| [포트폴리오 PDF](portfolio-deck/Mini_DRAM_Controller_Portfolio.pdf) | 27쪽. v0 → v4 요약(2쪽), v4 상세: 스펙 · 구조 · RTL · 파형 · 검증 · 디버그 · trade-off · HSL 통합 · 버전별 latency(3–21쪽), v2 – v4 비교: 구조 · 검증 · 성능 · 트래픽 분석 · PPA(22–26쪽) |
 
 ## 향후 과제
 
-- [ ] DFI 1 : 2 주파수 비율: 400 MHz에서 클럭당 명령 슬롯 2개. High-Speed Link Lite의 칩 STA에서 본 컨트롤러는 800 MHz timing을 충족하지 못했다(2.18 ns). 한 클럭 내 명령 선택과 전 뱅크 타이머 갱신 루프가 critical path다
-- [ ] 읽기 반환 깊이(`RD_PIPE`, 현재 최대 4)의 PHY 왕복 지연 정합: High-Speed Link Lite의 PHY에서는 RD 1개가 발행 클럭부터 data_valid까지 슬롯을 8클럭(본 저장소 모델은 3클럭) 점유해, 연속 읽기가 데이터 버스 50% 미만으로 제한된다(읽기 32개 97클럭)
+- [ ] DFI 1 : 2 주파수 비율: 400 MHz에서 클럭당 명령 슬롯 2개. High_Speed_Link_Lite의 칩 STA에서 본 컨트롤러는 800 MHz timing을 충족하지 못했다(2.18 ns). 한 클럭 내 명령 선택과 전 뱅크 타이머 갱신 루프가 critical path다
+- [ ] 읽기 반환 깊이(`RD_PIPE`, 현재 최대 4)의 PHY 왕복 지연 정합: High_Speed_Link_Lite의 PHY에서는 RD 1개가 발행 클럭부터 data_valid까지 슬롯을 8클럭(본 저장소 모델은 3클럭) 점유해, 연속 읽기가 데이터 버스 50% 미만으로 제한된다(읽기 32개 97클럭)
 - [ ] 뱅크 그룹 word 단위 interleaving과 XOR 해싱을 함께 적용한 매핑 (연속 주소 · stride 동시 대응)
 - [ ] P&R Flow(OpenROAD) 기반 기능별 타이밍 비용 재측정
 - [ ] 응답 버퍼(FF의 34%) 축소, `dram_model` 오류 경로 negative test
-- [x] High-Speed Link Lite의 PHY 앞단에 DFI 형태로 연결 (본 저장소 `44a0bb3`의 RTL을 HSL `0193c04`가 동일 파일로 사용, `q_empty` 출력 추가. 읽기 지연을 고정값처럼 기술한 헤더 주석은 `422036a`에서 수정해 HSL에도 동일 반영)
+- [x] High_Speed_Link_Lite의 PHY 앞단에 DFI 형태로 연결 (본 저장소 `44a0bb3`의 RTL을 HSL `0193c04`가 동일 파일로 사용, `q_empty` 출력 추가. 읽기 지연을 고정값처럼 기술한 헤더 주석은 `422036a`, 헤더의 프로젝트 이름은 `406c18d`에서 수정해 HSL에도 동일 반영)
 - [x] 트래픽 × 정책 매트릭스(64 word stride 포함)와 기능별 면적 · 타이밍 trade-off 표 ([분석](docs/analysis.md))
 - [x] 행 · 열 명령 버스 분리, 뱅크 그룹(tCCD · tRRD · tWTR의 S/L), per-bank refresh, RFM (v4)
 - [x] 읽기 · 쓰기 큐 분리, posted write와 포워딩, 쓰기 묶음 (v3)
@@ -574,4 +574,4 @@ Makefile                       sim, sim-rand, regress, cov, ppa, lint, sim-cocot
 
 ## 관련 프로젝트
 
-[High-Speed Link Lite](https://github.com/yhkwon-git/High_Speed_Link_Lite): 컨트롤러를 base die에 두는 custom HBM 구조를 전제로 한 HBM base die 디지털 1채널 슬라이스. 본 저장소의 v4 컨트롤러 RTL(`44a0bb3`)을 동일 파일로 사용해, DFI 형태 인터페이스로 디지털 PHY(행 · 열 CA 핀, 1.6 GHz beat와 WDQS, RDQS 캡처, SECDED ECC) · DFT · DFD(레인 BIST, March MBIST, BIRA와 fuse repair, trace buffer · MISR, IEEE 1500 방식 시험 포트)와 통합했다. 컨트롤러는 쓰기 데이터만 WR 후 고정 지연(WL)으로 출력하고 읽기 데이터는 `data_valid` 순서로 수신하므로, 읽기 지연이 고정되지 않은 PHY에도 그대로 연결된다(진행 중 RD 수는 `RD_PIPE`로 제한).
+[High_Speed_Link_Lite](https://github.com/yhkwon-git/High_Speed_Link_Lite): 컨트롤러를 base die에 두는 custom HBM 구조를 전제로 한 HBM base die 디지털 1채널 슬라이스. 본 저장소의 v4 컨트롤러 RTL(`44a0bb3`)을 동일 파일로 사용해, DFI 형태 인터페이스로 디지털 PHY(행 · 열 CA 핀, 1.6 GHz beat와 WDQS, RDQS 캡처, SECDED ECC) · DFT · DFD(레인 BIST, March MBIST, BIRA와 fuse repair, trace buffer · MISR, IEEE 1500 방식 시험 포트)와 통합했다. 컨트롤러는 쓰기 데이터만 WR 후 고정 지연(WL)으로 출력하고 읽기 데이터는 `data_valid` 순서로 수신하므로, 읽기 지연이 고정되지 않은 PHY에도 그대로 연결된다(진행 중 RD 수는 `RD_PIPE`로 제한).

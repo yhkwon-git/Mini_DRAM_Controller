@@ -1,4 +1,4 @@
-# Mini DRAM Controller Spec / 미니 DRAM 컨트롤러 스펙
+# Mini_DRAM_Controller Spec / 설계 스펙
 
 **Scope:** `host_if` → `mem_ctrl` (v4: read and write queues, command-level scheduler, row and column command buses, per-bank refresh, RFM) → `dram_model`  
 **Source of truth for constants:** `rtl/dram_pkg.sv`  
@@ -97,7 +97,7 @@ DFI-like: commands with fixed data latencies and no busy signal. The controller 
 | `dram_ap` | out | auto-precharge with this RD/WR (`PAGE_CLOSE`) |
 | `dram_wdata_en`, `dram_wdata` | out | write data, `WL` edges after its WR |
 | `dram_data_valid`, `dram_rdata` | in | read data, `RL` edges after its RD, in RD order. The controller counts RDs in flight on `dram_data_valid`, so a PHY may return the data later as long as the order holds |
-| `q_empty` | out | both request queues empty: every accepted request has reached the DRAM bus or was answered from the write queue (used by High-Speed Link Lite's lane BIST before it reads back) |
+| `q_empty` | out | both request queues empty: every accepted request has reached the DRAM bus or was answered from the write queue (used by High_Speed_Link_Lite's lane BIST before it reads back) |
 
 `dram_model` also drives `busy` (the `tRFC` window), `page_hit` and `access_err` for the testbench; the controller does not read them.
 
