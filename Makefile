@@ -1,4 +1,4 @@
-# Mini DRAM Controller — SystemVerilog RTL, directed and random testbenches
+# Mini_DRAM_Controller — SystemVerilog RTL, directed and random testbenches
 # Needs Verilator >= 5.0 (--binary, --timing). On Windows, run make inside WSL:
 #   wsl make sim          (from the repository folder)
 #

@@ -46,7 +46,7 @@ module mem_ctrl_top
   logic                 c_rsp_valid, c_rsp_ready, c_rsp_err;
   logic [DATA_BITS-1:0] c_rsp_rdata;
   /* verilator lint_off UNUSEDSIGNAL */
-  logic                 c_q_empty;  // used by High-Speed Link Lite's lane BIST, not here
+  logic                 c_q_empty;  // used by High_Speed_Link_Lite's lane BIST, not here
   /* verilator lint_on UNUSEDSIGNAL */
 
   dram_cmd_e            d_rcmd, d_ccmd;
